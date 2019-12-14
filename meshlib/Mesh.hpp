@@ -84,68 +84,67 @@ class Mesh {
 
     // vertices including deleted ones
     auto allVertices() const {
-        return ranges::view::iota(0, int(_vertices.size())) | ranges::view::transform([](int index) { return VertexHandle(index); });
+        return ranges::views::iota(0, int(_vertices.size())) | ranges::views::transform([](int index) { return VertexHandle(index); });
     }
     auto allUVPoints() const {
-        return ranges::view::iota(0, int(_uvPoints.size())) | ranges::view::transform([](int index) { return UVPointHandle(index); });
+        return ranges::views::iota(0, int(_uvPoints.size())) | ranges::views::transform([](int index) { return UVPointHandle(index); });
     }
     auto allEdges() const {
-        return ranges::view::iota(0, int(_edges.size())) | ranges::view::transform([](int index) { return EdgeHandle(index); });
+        return ranges::views::iota(0, int(_edges.size())) | ranges::views::transform([](int index) { return EdgeHandle(index); });
     }
     auto allFaces() const {
-        return ranges::view::iota(0, int(_faces.size())) | ranges::view::transform([](int index) { return FaceHandle(index); });
+        return ranges::views::iota(0, int(_faces.size())) | ranges::views::transform([](int index) { return FaceHandle(index); });
     }
 
     auto vertices() const {
-        return allVertices() | ranges::view::filter([this](auto handle) { return !vertexData(handle).isDeleted; });
+        return allVertices() | ranges::views::filter([this](auto handle) { return !vertexData(handle).isDeleted; });
     }
     auto uvPoints() const {
-        return allUVPoints() | ranges::view::filter([this](auto handle) { return !uvPointData(handle).isDeleted; });
+        return allUVPoints() | ranges::views::filter([this](auto handle) { return !uvPointData(handle).isDeleted; });
     }
     auto edges() const {
-        return allEdges() | ranges::view::filter([this](auto handle) { return !edgeData(handle).isDeleted; });
+        return allEdges() | ranges::views::filter([this](auto handle) { return !edgeData(handle).isDeleted; });
     }
     auto faces() const {
-        return allFaces() | ranges::view::filter([this](auto handle) { return !faceData(handle).isDeleted; });
+        return allFaces() | ranges::views::filter([this](auto handle) { return !faceData(handle).isDeleted; });
     }
 
     auto uvPoints(VertexHandle v) const {
-        return vertexData(v).uvPoints | ranges::view::filter([this](auto handle) { return !uvPointData(handle).isDeleted; });
+        return vertexData(v).uvPoints | ranges::views::filter([this](auto handle) { return !uvPointData(handle).isDeleted; });
     }
     auto edges(VertexHandle v) const {
-        return vertexData(v).edges | ranges::view::filter([this](auto handle) { return !edgeData(handle).isDeleted; });
+        return vertexData(v).edges | ranges::views::filter([this](auto handle) { return !edgeData(handle).isDeleted; });
     }
 
     auto vertex(UVPointHandle p) const {
         return uvPointData(p).vertex;
     }
     auto faces(UVPointHandle p) const {
-        return uvPointData(p).faces | ranges::view::filter([this](auto handle) { return !faceData(handle).isDeleted; });
+        return uvPointData(p).faces | ranges::views::filter([this](auto handle) { return !faceData(handle).isDeleted; });
     }
 
     auto faces(VertexHandle v) const {
-        return uvPoints(v) | ranges::view::transform([this](UVPointHandle uvPoint) {
+        return uvPoints(v) | ranges::views::transform([this](UVPointHandle uvPoint) {
                    return faces(uvPoint);
                }) |
-               ranges::action::join;
+               ranges::actions::join;
     }
 
     auto &vertices(EdgeHandle e) const { return edgeData(e).vertices; }
     auto faces(EdgeHandle e) const {
-        return edgeData(e).faces | ranges::view::filter([this](auto handle) { return !faceData(handle).isDeleted; });
+        return edgeData(e).faces | ranges::views::filter([this](auto handle) { return !faceData(handle).isDeleted; });
     }
 
     auto &uvPoints(FaceHandle f) const { return faceData(f).uvPoints; }
     auto vertices(FaceHandle f) const {
-        return uvPoints(f) | ranges::view::transform([this](UVPointHandle uvPoint) {
+        return uvPoints(f) | ranges::views::transform([this](UVPointHandle uvPoint) {
                    return vertex(uvPoint);
                });
     }
 
     auto &edges(FaceHandle f) const { return faceData(f).edges; }
 
-    template <typename TVertices, CONCEPT_REQUIRES_(ranges::Range<TVertices>())>
-    auto edges(TVertices &&vertices) const {
+    CPP_template(typename TVertices)(requires ranges::range<TVertices>) auto edges(TVertices &&vertices) const {
         std::unordered_map<EdgeHandle, size_t> edgeCounts;
 
         for (auto v : vertices) {
@@ -168,8 +167,7 @@ class Mesh {
         return edges;
     }
 
-    template <typename TVertices, CONCEPT_REQUIRES_(ranges::Range<TVertices>())>
-    auto faces(TVertices &&vertices) const {
+    CPP_template(typename TVertices)(requires ranges::range<TVertices>) auto faces(TVertices &&vertices) const {
         std::unordered_map<FaceHandle, size_t> faceCounts;
 
         for (auto v : vertices) {
@@ -225,7 +223,7 @@ class Mesh {
     void deselectAll();
 
     auto selectedVertices() const {
-        return vertices() | ranges::view::filter([this](auto handle) { return isSelected(handle); });
+        return vertices() | ranges::views::filter([this](auto handle) { return isSelected(handle); });
     }
     auto selectedEdges() const {
         return edges(selectedVertices());

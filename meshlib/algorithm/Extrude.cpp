@@ -81,7 +81,7 @@ std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &v
         mesh.addFace(newUVPoints, mesh.material(face));
 
         if (addFlipFace) {
-            auto reverseUVPoints = mesh.uvPoints(face) | ranges::view::reverse | ranges::to_vector;
+            auto reverseUVPoints = mesh.uvPoints(face) | ranges::views::reverse | ranges::to_vector;
             mesh.addFace(reverseUVPoints, mesh.material(face));
         }
 
