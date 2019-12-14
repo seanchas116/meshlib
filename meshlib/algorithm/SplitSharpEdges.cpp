@@ -1,8 +1,7 @@
 #include "SplitSharpEdges.hpp"
 #include <range/v3/algorithm/find.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 void splitSharpEdges(Mesh &mesh) {
     for (auto v : mesh.vertices()) {
@@ -49,7 +48,7 @@ void splitSharpEdges(Mesh &mesh) {
         std::vector<std::vector<FaceHandle>> faceGroups;
         for (auto f : faces) {
             bool addedToGroup = false;
-            for (auto& faceGroup : faceGroups) {
+            for (auto &faceGroup : faceGroups) {
                 bool connectedToGroup = false;
                 for (auto existingFace : faceGroup) {
                     if (isConnected(f, existingFace)) {
@@ -69,7 +68,7 @@ void splitSharpEdges(Mesh &mesh) {
         }
 
         for (auto it = faceGroups.begin() + 1; it != faceGroups.end(); ++it) {
-            auto& faceGroup = *it;
+            auto &faceGroup = *it;
             auto newVertex = mesh.addVertex(mesh.position(v));
 
             for (auto f : faceGroup) {
@@ -86,5 +85,4 @@ void splitSharpEdges(Mesh &mesh) {
     }
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

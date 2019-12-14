@@ -1,8 +1,7 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 struct BeltElement {
     EdgeHandle edge;
@@ -10,7 +9,6 @@ struct BeltElement {
     bool isEdgeReverse;
 };
 
-std::vector<BeltElement> findBelt(const Mesh& mesh, EdgeHandle edge);
+std::vector<BeltElement> findBelt(const Mesh &mesh, EdgeHandle edge);
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

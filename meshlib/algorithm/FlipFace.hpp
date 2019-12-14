@@ -1,10 +1,8 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-FaceHandle flipFace(Mesh& mesh, FaceHandle face);
+FaceHandle flipFace(Mesh &mesh, FaceHandle face);
 
-} // namespace Mesh
-} // namespace Lattice
+}

@@ -1,11 +1,8 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-std::unordered_set<VertexHandle> findConnected(const Mesh& mesh, const std::vector<VertexHandle>& vertices);
+std::unordered_set<VertexHandle> findConnected(const Mesh &mesh, const std::vector<VertexHandle> &vertices);
 
-} // namespace Mesh
-} // namespace Lattice
-
+} // namespace meshlib

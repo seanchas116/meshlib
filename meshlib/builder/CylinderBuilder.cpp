@@ -1,12 +1,11 @@
 #include "CylinderBuilder.hpp"
-#include "CircleBuilder.hpp"
 #include "../algorithm/Extrude.hpp"
+#include "CircleBuilder.hpp"
 #include <QtGlobal>
 
 using namespace glm;
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 Mesh CylinderBuilder::build() const {
     CircleBuilder circleBuilder;
@@ -21,12 +20,11 @@ Mesh CylinderBuilder::build() const {
     vec3 extrudeOffset(0);
     extrudeOffset[axis] = height;
 
-    for (auto&& v : extrudedVertices) {
+    for (auto &&v : extrudedVertices) {
         mesh.setPosition(v, mesh.position(v) + extrudeOffset);
     }
 
     return mesh;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

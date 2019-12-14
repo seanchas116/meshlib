@@ -1,8 +1,7 @@
 #include "FlipFace.hpp"
 #include <range/v3/view/reverse.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 FaceHandle flipFace(Mesh &mesh, FaceHandle face) {
     auto reverseUVPoints = mesh.uvPoints(face) | ranges::view::reverse | ranges::to_vector;
@@ -11,5 +10,4 @@ FaceHandle flipFace(Mesh &mesh, FaceHandle face) {
     return newFace;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

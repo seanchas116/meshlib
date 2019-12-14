@@ -1,8 +1,7 @@
 #include "FindLoop.hpp"
 #include <range/v3/algorithm/find.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 std::vector<EdgeHandle> findLoop(const Mesh &mesh, EdgeHandle edge) {
     std::vector<EdgeHandle> edges;
@@ -68,5 +67,4 @@ std::vector<EdgeHandle> findLoop(const Mesh &mesh, EdgeHandle edge) {
     }
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

@@ -1,10 +1,8 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-std::vector<EdgeHandle> findLoop(const Mesh& mesh, EdgeHandle edge);
+std::vector<EdgeHandle> findLoop(const Mesh &mesh, EdgeHandle edge);
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

@@ -1,11 +1,10 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 class CubeBuilder {
-public:
+  public:
     Mesh build() const;
 
     glm::vec3 minPos{-1};
@@ -13,6 +12,4 @@ public:
     MaterialHandle material;
 };
 
-} // namespace Mesh
-} // namespace Lattice
-
+} // namespace meshlib

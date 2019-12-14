@@ -5,23 +5,22 @@
 namespace {
 
 template <typename T>
-std::string toDataString(const std::vector<T>& data) {
+std::string toDataString(const std::vector<T> &data) {
     std::string dataString(data.size() * sizeof(T), 0);
     memcpy(dataString.data(), data.data(), dataString.size());
     return dataString;
 }
 
 template <typename T>
-std::vector<T> fromDataString(const std::string& dataString) {
+std::vector<T> fromDataString(const std::string &dataString) {
     std::vector<T> data(dataString.size() / sizeof(T));
     memcpy(data.data(), dataString.data(), data.size() * sizeof(T));
     return data;
 }
 
-}
+} // namespace
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 MeshData::MeshData(const Mesh &origMesh) {
     auto mesh = origMesh.collectGarbage();
@@ -36,13 +35,13 @@ MeshData::MeshData(const Mesh &origMesh) {
         uvVertexArray.push_back(mesh.vertex(uv).index);
     }
     for (auto e : mesh.edges()) {
-        auto& vertices = mesh.vertices(e);
+        auto &vertices = mesh.vertices(e);
         edgeVerticesArray.push_back({vertices[0].index, vertices[1].index});
         edgeSharpArray.push_back(mesh.isSharp(e));
         edgeCreaseArray.push_back(mesh.crease(e));
     }
     for (auto f : mesh.faces()) {
-        auto& uvPoints = mesh.uvPoints(f);
+        auto &uvPoints = mesh.uvPoints(f);
         faceVertexCountArray.push_back(uvPoints.size());
         faceMaterialArray.push_back(mesh.material(f).index);
         for (auto uv : uvPoints) {
@@ -127,5 +126,4 @@ void from_json(const nlohmann::json &json, MeshData &meshData) {
     meshData.faceUVPointArray = fromDataString<int32_t>(json["face"]["uvPoint"]);
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

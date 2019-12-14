@@ -4,15 +4,14 @@
 #include <range/v3/algorithm/find.hpp>
 #include <range/v3/algorithm/find_if.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 std::vector<VertexHandle> loopCut(Mesh &mesh, EdgeHandle edge, float cutPosition) {
     auto belt = findBelt(mesh, edge);
 
     std::vector<VertexHandle> vertices;
     vertices.reserve(belt.size());
-    for (auto& [edge, face, isReverse] : belt) {
+    for (auto &[edge, face, isReverse] : belt) {
         auto v = cutEdge(mesh, edge, isReverse ? (1.f - cutPosition) : cutPosition);
         vertices.push_back(v);
     }
@@ -25,5 +24,4 @@ std::vector<VertexHandle> loopCut(Mesh &mesh, EdgeHandle edge, float cutPosition
     return vertices;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

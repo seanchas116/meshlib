@@ -2,10 +2,8 @@
 
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-std::vector<VertexHandle> extrude(Mesh& mesh, const std::vector<VertexHandle>& vertices, bool addFlipFace = false);
+std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &vertices, bool addFlipFace = false);
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

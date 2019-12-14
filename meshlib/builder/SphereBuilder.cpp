@@ -3,8 +3,7 @@
 
 using namespace glm;
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 Mesh SphereBuilder::build() const {
     Mesh mesh;
@@ -37,7 +36,7 @@ Mesh SphereBuilder::build() const {
         mesh.addFace({bottom, uvPointMatrix[0][next], uvPointMatrix[0][i]}, material);
 
         for (int ring = 0; ring < ringCount - 2; ++ring) {
-            mesh.addFace({uvPointMatrix[ring][i], uvPointMatrix[ring][next], uvPointMatrix[ring+1][next], uvPointMatrix[ring+1][i]}, material);
+            mesh.addFace({uvPointMatrix[ring][i], uvPointMatrix[ring][next], uvPointMatrix[ring + 1][next], uvPointMatrix[ring + 1][i]}, material);
         }
 
         mesh.addFace({uvPointMatrix[ringCount - 2][i], uvPointMatrix[ringCount - 2][next], top}, material);
@@ -46,5 +45,4 @@ Mesh SphereBuilder::build() const {
     return mesh;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

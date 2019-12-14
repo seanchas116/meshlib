@@ -2,8 +2,7 @@
 
 using namespace glm;
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 VertexHandle cutEdge(Mesh &mesh, EdgeHandle edge, float t) {
     auto pos = glm::mix(mesh.position(mesh.vertices(edge)[0]),
@@ -43,5 +42,4 @@ VertexHandle cutEdge(Mesh &mesh, EdgeHandle edge, float t) {
     return mesh.vertex(uv);
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

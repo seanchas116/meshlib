@@ -3,8 +3,7 @@
 
 using namespace glm;
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 Mesh CubeBuilder::build() const {
     Mesh mesh;
@@ -42,5 +41,4 @@ Mesh CubeBuilder::build() const {
     return mesh;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

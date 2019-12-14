@@ -10,8 +10,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 class Mesh {
     struct VertexData {
@@ -238,5 +237,4 @@ class Mesh {
     void merge(const Mesh &other);
 };
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

@@ -2,8 +2,7 @@
 #include <range/v3/algorithm/find.hpp>
 #include <range/v3/algorithm/find_if.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 std::vector<BeltElement> findBelt(const Mesh &mesh, EdgeHandle edge) {
     bool isEdgeReverse = false;
@@ -48,5 +47,4 @@ std::vector<BeltElement> findBelt(const Mesh &mesh, EdgeHandle edge) {
     }
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

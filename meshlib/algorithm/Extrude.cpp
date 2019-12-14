@@ -1,8 +1,7 @@
 #include "Extrude.hpp"
 #include <range/v3/view/reverse.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &vertices, bool addFlipFace) {
     std::vector<VertexHandle> newVertices;
@@ -13,9 +12,9 @@ std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &v
     auto faces = mesh.faces(vertices);
 
     std::unordered_set<EdgeHandle> openEdges;
-    for (auto&& edge : edges) {
+    for (auto &&edge : edges) {
         int faceCount = 0;
-        for (auto&& face : mesh.faces(edge)) {
+        for (auto &&face : mesh.faces(edge)) {
             if (faces.find(face) != faces.end()) {
                 ++faceCount;
             }
@@ -25,7 +24,7 @@ std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &v
         }
     }
 
-    for (auto&& vertex : vertices) {
+    for (auto &&vertex : vertices) {
         auto uvPoint = mesh.uvPoints(vertex).front(); // TODO: find best uv
         auto newVertex = mesh.addVertex(mesh.position(vertex));
         auto newUVPoint = mesh.addUVPoint(newVertex, mesh.uvPosition(uvPoint));
@@ -36,17 +35,17 @@ std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &v
         newVertices.push_back(newVertex);
     }
 
-    for (auto& edge : edges) {
+    for (auto &edge : edges) {
         auto uv0 = oldToNewUVPoints.at(vertexToUV.at(mesh.vertices(edge)[0]));
         auto uv1 = oldToNewUVPoints.at(vertexToUV.at(mesh.vertices(edge)[1]));
         mesh.addEdge({mesh.vertex(uv0), mesh.vertex(uv1)});
     }
 
-    for (auto& openEdge : openEdges) {
+    for (auto &openEdge : openEdges) {
         bool isReverse = true;
         MaterialHandle material;
 
-        for (auto& face : mesh.faces(openEdge)) {
+        for (auto &face : mesh.faces(openEdge)) {
             if (faces.find(face) != faces.end()) {
                 material = mesh.material(face);
                 continue;
@@ -73,9 +72,9 @@ std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &v
         }
     }
 
-    for (auto& face : faces) {
+    for (auto &face : faces) {
         std::vector<UVPointHandle> newUVPoints;
-        for (auto& uv : mesh.uvPoints(face)) {
+        for (auto &uv : mesh.uvPoints(face)) {
             auto newUV = oldToNewUVPoints.at(uv);
             newUVPoints.push_back(newUV);
         }
@@ -92,5 +91,4 @@ std::vector<VertexHandle> extrude(Mesh &mesh, const std::vector<VertexHandle> &v
     return newVertices;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

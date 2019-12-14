@@ -1,10 +1,9 @@
 #include "Mesh.hpp"
-#include <range/v3/algorithm/find_if.hpp>
-#include <range/v3/algorithm/find.hpp>
 #include <range/v3/action/erase.hpp>
+#include <range/v3/algorithm/find.hpp>
+#include <range/v3/algorithm/find_if.hpp>
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 VertexHandle Mesh::addVertex(glm::vec3 position) {
     VertexData vertexData;
@@ -24,7 +23,7 @@ UVPointHandle Mesh::addUVPoint(VertexHandle v, glm::vec2 position) {
     return uvPoint;
 }
 
-EdgeHandle Mesh::addEdge(const std::array<VertexHandle, 2>& vertices) {
+EdgeHandle Mesh::addEdge(const std::array<VertexHandle, 2> &vertices) {
     // check if edge already exists
     for (auto edge : edges(vertices[0])) {
         auto edgeVertices = this->vertices(edge);
@@ -54,10 +53,10 @@ EdgeHandle Mesh::addEdge(const std::array<VertexHandle, 2>& vertices) {
         std::vector<std::tuple<std::vector<UVPointHandle>, std::vector<UVPointHandle>, MaterialHandle>> faceAdditions;
 
         // split faces that includes newly added edge
-        for (auto& face : facesToCheckSplit) {
-            auto& faceUVPoints = uvPoints(face);
-            auto uv0It = ranges::find_if(faceUVPoints, [&](auto& uv) { return vertex(uv) == vertices[0]; });
-            auto uv1It = ranges::find_if(faceUVPoints, [&](auto& uv) { return vertex(uv) == vertices[1]; });
+        for (auto &face : facesToCheckSplit) {
+            auto &faceUVPoints = uvPoints(face);
+            auto uv0It = ranges::find_if(faceUVPoints, [&](auto &uv) { return vertex(uv) == vertices[0]; });
+            auto uv1It = ranges::find_if(faceUVPoints, [&](auto &uv) { return vertex(uv) == vertices[1]; });
             if (uv0It != faceUVPoints.end() && uv1It != faceUVPoints.end()) {
                 // face includes edge
                 if (uv1It < uv0It) {
@@ -73,11 +72,11 @@ EdgeHandle Mesh::addEdge(const std::array<VertexHandle, 2>& vertices) {
                 facesToRemove.push_back(face);
             }
         }
-        for (auto& [uvPoints0, uvPoints1, material] : faceAdditions) {
+        for (auto &[uvPoints0, uvPoints1, material] : faceAdditions) {
             addFace(uvPoints0, material);
             addFace(uvPoints1, material);
         }
-        for (auto& f : facesToRemove) {
+        for (auto &f : facesToRemove) {
             removeFace(f);
         }
     }
@@ -161,7 +160,7 @@ Mesh Mesh::collectGarbage() const {
     std::vector<int32_t> newVertexIndices(_vertices.size());
 
     for (size_t i = 0; i < _vertices.size(); ++i) {
-        auto& vertexData = _vertices[i];
+        auto &vertexData = _vertices[i];
         if (vertexData.isDeleted) {
             newVertexIndices[i] = -1;
             continue;
@@ -173,7 +172,7 @@ Mesh Mesh::collectGarbage() const {
     std::vector<UVPointData> newUVPoints;
     std::vector<int32_t> newUVPointIndices(_uvPoints.size());
     for (size_t i = 0; i < _uvPoints.size(); ++i) {
-        auto& uvPointData = _uvPoints[i];
+        auto &uvPointData = _uvPoints[i];
         if (uvPointData.isDeleted) {
             newUVPointIndices[i] = -1;
             continue;
@@ -185,7 +184,7 @@ Mesh Mesh::collectGarbage() const {
     std::vector<EdgeData> newEdges;
     std::vector<int32_t> newEdgeIndices(_edges.size());
     for (size_t i = 0; i < _edges.size(); ++i) {
-        auto& edgeData = _edges[i];
+        auto &edgeData = _edges[i];
         if (edgeData.isDeleted) {
             newEdgeIndices[i] = -1;
             continue;
@@ -197,7 +196,7 @@ Mesh Mesh::collectGarbage() const {
     std::vector<FaceData> newFaces;
     std::vector<int32_t> newFaceIndices(_faces.size());
     for (size_t i = 0; i < _faces.size(); ++i) {
-        auto& faceData = _faces[i];
+        auto &faceData = _faces[i];
         if (faceData.isDeleted) {
             newFaceIndices[i] = -1;
             continue;
@@ -206,7 +205,7 @@ Mesh Mesh::collectGarbage() const {
         newFaces.push_back(faceData);
     }
 
-    for (auto& vertexData : newVertices) {
+    for (auto &vertexData : newVertices) {
         std::vector<UVPointHandle> newUVPoints;
         for (auto uvPoint : vertexData.uvPoints) {
             int newIndex = newUVPointIndices[uvPoint.index];
@@ -225,7 +224,7 @@ Mesh Mesh::collectGarbage() const {
         }
         vertexData.edges = std::move(newEdges);
     }
-    for (auto& uvPointData : newUVPoints) {
+    for (auto &uvPointData : newUVPoints) {
         uvPointData.vertex.index = newVertexIndices[uvPointData.vertex.index];
 
         std::vector<FaceHandle> newFaces;
@@ -237,8 +236,8 @@ Mesh Mesh::collectGarbage() const {
         }
         uvPointData.faces = std::move(newFaces);
     }
-    for (auto& edgeData  : newEdges) {
-        for (auto& vertex : edgeData.vertices) {
+    for (auto &edgeData : newEdges) {
+        for (auto &vertex : edgeData.vertices) {
             vertex.index = newVertexIndices[vertex.index];
         }
 
@@ -251,11 +250,11 @@ Mesh Mesh::collectGarbage() const {
         }
         edgeData.faces = std::move(newFaces);
     }
-    for (auto& faceData : newFaces) {
-        for (auto& uvPoint : faceData.uvPoints) {
+    for (auto &faceData : newFaces) {
+        for (auto &uvPoint : faceData.uvPoints) {
             uvPoint.index = newUVPointIndices[uvPoint.index];
         }
-        for (auto& edge : faceData.edges) {
+        for (auto &edge : faceData.edges) {
             edge.index = newEdgeIndices[edge.index];
         }
     }
@@ -291,7 +290,7 @@ glm::vec3 Mesh::calculateNormal(FaceHandle face) const {
         auto prev = position(vertices[i]);
         auto curr = position(vertices[(i + 1) % vertexCount]);
         auto next = position(vertices[(i + 2) % vertexCount]);
-        auto crossValue = cross(next- curr, prev - curr);
+        auto crossValue = cross(next - curr, prev - curr);
         if (crossValue == glm::vec3(0)) {
             continue;
         }
@@ -329,40 +328,39 @@ void Mesh::merge(const Mesh &other) {
     _faces.reserve(_faces.size() + other._faces.size());
 
     for (auto vertexData : other._vertices) {
-        for (auto& uv : vertexData.uvPoints) {
+        for (auto &uv : vertexData.uvPoints) {
             uv.index += uvPointOffset;
         }
-        for (auto& e : vertexData.edges) {
+        for (auto &e : vertexData.edges) {
             e.index += edgeOffset;
         }
         _vertices.push_back(vertexData);
     }
     for (auto uvPointData : other._uvPoints) {
         uvPointData.vertex.index += vertexOffset;
-        for (auto& f : uvPointData.faces) {
+        for (auto &f : uvPointData.faces) {
             f.index += faceOffset;
         }
         _uvPoints.push_back(uvPointData);
     }
     for (auto edgeData : other._edges) {
-        for (auto& v : edgeData.vertices) {
+        for (auto &v : edgeData.vertices) {
             v.index += vertexOffset;
         }
-        for (auto& f : edgeData.faces) {
+        for (auto &f : edgeData.faces) {
             f.index += faceOffset;
         }
         _edges.push_back(edgeData);
     }
     for (auto faceData : other._faces) {
-        for (auto& uv : faceData.uvPoints) {
+        for (auto &uv : faceData.uvPoints) {
             uv.index += uvPointOffset;
         }
-        for (auto& e : faceData.edges) {
+        for (auto &e : faceData.edges) {
             e.index += edgeOffset;
         }
         _faces.push_back(faceData);
     }
 }
 
-} // namespace NewMesh
-} // namespace Lattice
+} // namespace meshlib

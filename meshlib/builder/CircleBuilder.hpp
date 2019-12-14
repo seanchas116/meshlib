@@ -1,11 +1,10 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 class CircleBuilder {
-public:
+  public:
     Mesh build() const;
 
     glm::vec3 center{0};
@@ -15,6 +14,4 @@ public:
     MaterialHandle material;
 };
 
-} // namespace Mesh
-} // namespace Lattice
-
+} // namespace meshlib

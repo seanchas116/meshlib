@@ -1,11 +1,8 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-VertexHandle cutEdge(Mesh& mesh, EdgeHandle edge, float t);
+VertexHandle cutEdge(Mesh &mesh, EdgeHandle edge, float t);
 
-} // namespace Mesh
-} // namespace Lattice
-
+}

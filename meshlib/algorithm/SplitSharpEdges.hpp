@@ -1,10 +1,8 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-void splitSharpEdges(Mesh& mesh);
+void splitSharpEdges(Mesh &mesh);
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

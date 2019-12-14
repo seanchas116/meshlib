@@ -1,10 +1,8 @@
 #pragma once
 #include "../Mesh.hpp"
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
-std::vector<VertexHandle> loopCut(Mesh& mesh, EdgeHandle edge, float cutPosition);
+std::vector<VertexHandle> loopCut(Mesh &mesh, EdgeHandle edge, float cutPosition);
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib

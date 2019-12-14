@@ -3,8 +3,7 @@
 
 using namespace glm;
 
-namespace Lattice {
-namespace Mesh {
+namespace meshlib {
 
 Mesh ConeBuilder::build() const {
     Mesh mesh;
@@ -12,7 +11,7 @@ Mesh ConeBuilder::build() const {
     std::vector<UVPointHandle> uvPoints;
 
     float angleStep = float(M_PI) * 2 / segmentCount;
-    for (int i = 0 ; i < segmentCount; ++i) {
+    for (int i = 0; i < segmentCount; ++i) {
         float angle = angleStep * i;
         vec3 offset(0);
         offset[(axis + 1) % 3] = cos(angle);
@@ -39,5 +38,4 @@ Mesh ConeBuilder::build() const {
     return mesh;
 }
 
-} // namespace Mesh
-} // namespace Lattice
+} // namespace meshlib
