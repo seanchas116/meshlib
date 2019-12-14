@@ -205,13 +205,11 @@ class Mesh {
     glm::vec2 uvPosition(UVPointHandle uv) const { return uvPointData(uv).uvPosition; }
     void setUVPosition(UVPointHandle uv, glm::vec2 pos) { uvPointData(uv).uvPosition = pos; }
 
-    /*
-    Ray<float> ray(EdgeHandle edge) const {
-        auto pos0 = position(vertices(edge)[0]);
-        auto pos1 = position(vertices(edge)[1]);
-        return Ray<float>(pos0, pos1 - pos0);
+    std::array<glm::vec3, 2> positions(EdgeHandle e) const {
+        auto pos0 = position(vertices(e)[0]);
+        auto pos1 = position(vertices(e)[1]);
+        return {pos0, pos1};
     }
-    */
 
     bool isSharp(EdgeHandle edge) const { return edgeData(edge).isSharp; }
     void setSharp(EdgeHandle edge, bool isSharp) { edgeData(edge).isSharp = isSharp; }
